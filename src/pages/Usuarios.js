@@ -135,7 +135,7 @@ export default function Usuarios() {
           </Grid>
 
           <Box mt={4}>
-            <Typography variant="h6">Tarjetas de eventos</Typography>
+            <Typography variant="h6">Tarjetas de eventoss</Typography>
             <Grid container spacing={2}>
               {historialEventos[usuarioSeleccionado.nombre]?.map((e, i) => (
                 <Grid item xs={12} md={6} key={i}>
