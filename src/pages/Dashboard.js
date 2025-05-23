@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  BarChart, Bar, PieChart, Pie, Cell
+  BarChart, Bar
 } from "recharts";
 import {
-  Table, TableBody, TableCell, TableHead, TableRow, Button, Chip
+  Table, TableBody, TableCell, TableHead, TableRow, Button, Chip,
+  Card, CardContent, Typography, Collapse, List, ListItem, ListItemText
 } from "@mui/material";
 
 const rust = "#b24e1b";
@@ -19,12 +20,20 @@ export default function Dashboard() {
     avgTime: [],
     queue: 4,
     activeUsers: 123,
-    services: [
-      { name: "Background Remover", status: true },
-      { name: "Halftone Generator", status: true },
-      { name: "Enhancer AI", status: false }
-    ]
+    services: [],
+    failedJobs: [],
+    nuevosUsuarios: [],
   });
+
+  const [expand, setExpand] = useState({
+    errores: false,
+    jobs: false,
+    nuevos: false
+  });
+
+  const toggle = (key) => {
+    setExpand(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     setStats({
@@ -43,7 +52,8 @@ export default function Dashboard() {
       recentErrors: [
         { id: 101, tool: "Enhancer", msg: "Timeout processing", time: "10:24" },
         { id: 102, tool: "BG Remover", msg: "File too large", time: "10:41" },
-        { id: 103, tool: "Halftone", msg: "Invalid PNG format", time: "11:15" }
+        { id: 103, tool: "Halftone", msg: "Invalid PNG format", time: "11:15" },
+        { id: 104, tool: "Enhancer", msg: "Null pointer", time: "12:02" }
       ],
       avgTime: [
         { tool: "BG Remover", time: 1.5 },
@@ -56,6 +66,20 @@ export default function Dashboard() {
         { name: "Background Remover", status: true },
         { name: "Halftone Generator", status: true },
         { name: "Enhancer AI", status: false }
+      ],
+      failedJobs: [
+        { usuario: "usuario_001", herramienta: "Quitar fondo", detalle: "Reintentos fallidos" },
+        { usuario: "usuario_002", herramienta: "Semitono", detalle: "Archivo corrupto" },
+        { usuario: "usuario_003", herramienta: "Mejora", detalle: "Sin respuesta del servidor" },
+        { usuario: "usuario_001", herramienta: "Editor", detalle: "Timeout inesperado" }
+      ],
+      nuevosUsuarios: [
+        "usuario_045", "usuario_046", "usuario_047", "usuario_048",
+        "usuario_049", "usuario_050", "usuario_051", "usuario_052",
+        "usuario_053", "usuario_054", "usuario_055", "usuario_056",
+        "usuario_057", "usuario_058", "usuario_059", "usuario_060",
+        "usuario_061", "usuario_062", "usuario_063", "usuario_064",
+        "usuario_065", "usuario_066", "usuario_067"
       ]
     });
   }, []);
@@ -96,7 +120,6 @@ export default function Dashboard() {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      
 
       {/* Mini panel: errores por herramienta */}
       <div className="card mini1">
@@ -111,8 +134,8 @@ export default function Dashboard() {
         </ResponsiveContainer>
       </div>
 
-      {/* Log de errores recientes */}
-      <div className="card log">
+      {/* 🔥 Errores recientes */}
+      <div className="card log" onClick={() => toggle("errores")} style={{ cursor: "pointer" }}>
         <h3>🔥 Errores recientes</h3>
         <Table size="small">
           <TableHead>
@@ -124,7 +147,7 @@ export default function Dashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stats.recentErrors.map(e => (
+            {(expand.errores ? stats.recentErrors : stats.recentErrors.slice(0, 3)).map(e => (
               <TableRow key={e.id}>
                 <TableCell>{e.time}</TableCell>
                 <TableCell>{e.tool}</TableCell>
@@ -138,9 +161,9 @@ export default function Dashboard() {
         </Table>
       </div>
 
-      {/* Inferiores */}
+      {/* ⏱ Tiempo promedio */}
       <div className="card b1">
-        <h3>Tiempo promedio</h3>
+        <h3>⏱ Tiempo promedio</h3>
         <ul>
           {stats.avgTime.map(t => (
             <li key={t.tool}>{t.tool}: {t.time}s</li>
@@ -148,14 +171,30 @@ export default function Dashboard() {
         </ul>
       </div>
 
-      <div className="card b2">
-        <h3>Jobs fallidos 3 veces seguidas</h3>
+      {/* ⚠️ Jobs fallidos 3 veces */}
+      <div className="card b2" onClick={() => toggle("jobs")} style={{ cursor: "pointer" }}>
+        <h3>⚠️ Jobs fallidos 3 veces seguidas</h3>
         <p>4 casos detectados hoy</p>
+        <Collapse in={expand.jobs}>
+          <ul>
+            {stats.failedJobs.map((f, i) => (
+              <li key={i}>{f.usuario} – {f.herramienta}: {f.detalle}</li>
+            ))}
+          </ul>
+        </Collapse>
       </div>
 
-      <div className="card b3">
-        <h3>Usuarios nuevos esta semana</h3>
-        <p>+23 registros</p>
+      {/* 👤 Usuarios nuevos esta semana */}
+      <div className="card b3" onClick={() => toggle("nuevos")} style={{ cursor: "pointer" }}>
+        <h3>👤 Usuarios nuevos esta semana</h3>
+        <p>+{stats.nuevosUsuarios.length} registros</p>
+        <Collapse in={expand.nuevos}>
+          <ul>
+            {stats.nuevosUsuarios.map((u, i) => (
+              <li key={i}>• {u}</li>
+            ))}
+          </ul>
+        </Collapse>
       </div>
     </div>
   );

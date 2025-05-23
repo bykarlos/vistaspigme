@@ -58,6 +58,20 @@ const dataDonut = [
 ];
 const colores = ["#00ffff", "#8a2be2", "#b24e1b", "#d4b47a"];
 
+const cardStyle = {
+  background: "linear-gradient(135deg, #0d0d0d, #1a1a1a)",
+  border: "1px solid #00ffff",
+  borderRadius: "16px",
+  boxShadow: "0 0 15px #00ffff55",
+  color: "#ffffff"
+};
+
+const titleStyle = {
+  color: "#00ffff",
+  fontWeight: "bold",
+  marginBottom: "8px"
+};
+
 export default function Usuarios() {
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
@@ -65,9 +79,9 @@ export default function Usuarios() {
     <Box display="flex" flexDirection="column" gap={2} p={2}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card style={cardStyle}>
             <CardContent>
-              <Typography variant="h6">Filtros de experiencia</Typography>
+              <Typography style={titleStyle} variant="h6">Filtros de experiencia</Typography>
               <TextField fullWidth margin="normal" label="Buscar por nombre" />
               <TextField fullWidth margin="normal" label="Rango de fechas" />
             </CardContent>
@@ -75,12 +89,17 @@ export default function Usuarios() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card style={cardStyle}>
             <CardContent>
-              <Typography variant="h6">Usuarios</Typography>
+              <Typography style={titleStyle} variant="h6">Usuarios</Typography>
               <List>
                 {usuariosFake.map(u => (
-                  <ListItem button key={u.id} selected={usuarioSeleccionado?.id === u.id} onClick={() => setUsuarioSeleccionado(u)}>
+                  <ListItem
+                    button
+                    key={u.id}
+                    selected={usuarioSeleccionado?.id === u.id}
+                    onClick={() => setUsuarioSeleccionado(u)}
+                  >
                     <ListItemText primary={u.nombre} />
                   </ListItem>
                 ))}
@@ -92,28 +111,28 @@ export default function Usuarios() {
 
       {usuarioSeleccionado && (
         <Box mt={4}>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" gutterBottom style={titleStyle}>
             Información detallada: {usuarioSeleccionado.nombre}
           </Typography>
 
           <Grid container spacing={2}>
             {nombresGraficos.map((titulo, i) => (
               <Grid item xs={12} md={4} key={i}>
-                <Card>
+                <Card style={cardStyle}>
                   <CardContent>
-                    <Typography variant="subtitle1">{titulo}</Typography>
+                    <Typography style={titleStyle} variant="subtitle1">{titulo}</Typography>
                     <ResponsiveContainer width="100%" height={150}>
                       {i < 6 ? (
                         <LineChart data={datosGenericos}>
-                          <XAxis dataKey="name" stroke="#888" />
-                          <YAxis stroke="#888" />
+                          <XAxis dataKey="name" stroke="#ccc" />
+                          <YAxis stroke="#ccc" />
                           <Tooltip />
                           <Line type="monotone" dataKey="valor" stroke="#00ffff" strokeWidth={2} />
                         </LineChart>
                       ) : i < 11 ? (
                         <BarChart data={datosGenericos}>
-                          <XAxis dataKey="name" stroke="#888" />
-                          <YAxis stroke="#888" />
+                          <XAxis dataKey="name" stroke="#ccc" />
+                          <YAxis stroke="#ccc" />
                           <Tooltip />
                           <Bar dataKey="valor" fill="#8a2be2" />
                         </BarChart>
@@ -135,11 +154,11 @@ export default function Usuarios() {
           </Grid>
 
           <Box mt={4}>
-            <Typography variant="h6">Tarjetas de eventoss</Typography>
+            <Typography variant="h6" style={titleStyle}>Eventos recientes</Typography>
             <Grid container spacing={2}>
               {historialEventos[usuarioSeleccionado.nombre]?.map((e, i) => (
                 <Grid item xs={12} md={6} key={i}>
-                  <Card>
+                  <Card style={{ ...cardStyle, border: "1px solid #8a2be2", boxShadow: "0 0 12px #8a2be255" }}>
                     <CardContent>
                       <Typography>{e.evento}</Typography>
                     </CardContent>
