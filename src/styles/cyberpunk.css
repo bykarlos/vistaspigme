@@ -1,0 +1,115 @@
+/* --------------------------------------------------
+   PIGMENTA – Cyberpunk Minimal Clean • v3.0
+   Líneas finas • Neon elegante • UI silenciosa
+--------------------------------------------------- */
+
+/* 🎨 Variables de color */
+:root {
+  --bg: #0b0f17;
+  --fg: #d7e3f4;
+  --primary: #00fff7;
+  --accent: #8a2be2;
+  --surface: #101623;
+  --radius: 10px;
+  --transition: 0.3s ease;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-areas:
+    "kpi1 kpi2 kpi3"
+    "graph graph graph"
+    "mini1 log log"
+    "b1 b2 b3";
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.kpi1 { grid-area: kpi1; }
+.kpi2 { grid-area: kpi2; }
+.kpi3 { grid-area: kpi3; }
+.graph { grid-area: graph; }
+.mini1 { grid-area: mini1; }
+.log { grid-area: log; }
+.b1 { grid-area: b1; }
+.b2 { grid-area: b2; }
+.b3 { grid-area: b3; }
+
+
+/* ✨ Base */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ☰ Sidebar fino con acento neón */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--primary);
+  padding: 1.5rem;
+}
+.sidebar h2 {
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+.sidebar a {
+  display: block;
+  color: var(--fg);
+  padding: 0.6rem 0;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: color var(--transition);
+}
+.sidebar a:hover {
+  color: var(--accent);
+}
+
+/* 📦 Card con borde fino y glow sutil */
+.card {
+  background: var(--surface);
+  border: 1px solid transparent;
+  border-image: linear-gradient(120deg, var(--primary), var(--accent)) 1;
+  border-radius: var(--radius);
+  padding: 1.8rem;
+  margin-bottom: 2rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.card:hover {
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+}
+
+/* 🔘 Botón liviano, con contorno neón */
+.btn-cyber {
+  background: transparent;
+  color: var(--primary);
+  padding: 10px 24px;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  letter-spacing: 0.06rem;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+.btn-cyber:hover {
+  background: var(--primary);
+  color: var(--bg);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+/* 🖱 Scrollbar fino y moderno */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
